@@ -16,7 +16,7 @@ async function loginProcess(username, password) {
     
     try {
         // Gửi request GET đến API đăng nhập
-        const apiUrl = `/account/login?account=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+        const apiUrl = API_CONFIG_BASEMENT.API_BASE_URL + `/account/login?account=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
         console.log(`📡 Sending login request to: ${apiUrl}`);
         
         const response = await fetch(apiUrl, {
