@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý VBA Functions</title>
+    
+    <!-- Trong phần header, thêm sau tiêu đề -->
+    <div class="dialogvbaexcel-section-header">
+        <h3><i class="fas fa-list"></i> Danh sách Functions</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <span class="dialogvbaexcel-badge" id="dialogvbaexcel_listCount">0</span>
+            <span id="dialogvbaexcel_serverStatus" class="dialogvbaexcel-badge" 
+                  style="background: #6c757d; font-size: 0.8rem;">
+                  Đang kiểm tra...
+            </span>
+            <button id="dialogvbaexcel_testConnection" class="dialogvbaexcel-btn" 
+                    style="padding: 5px 10px; font-size: 0.8rem;">
+                <i class="fas fa-sync-alt"></i> Test
+            </button>
+        </div>
+    </div>
+    
+    <link rel="stylesheet" href="css/pageusefullvbaexcelfunction.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dialogvbaexcel-container" id="dialogvbaexcelContainer" 
+         data-auto-init="true" data-page="vba-functions">
+      
+        <!-- Chỉ hiển thị nội dung chính -->
+        <div class="dialogvbaexcel-main-content">
+            <!-- Cột trái: Danh sách functions -->
+            <div class="dialogvbaexcel-left-column">
+                <div class="dialogvbaexcel-section-header">
+                    <h3><i class="fas fa-list"></i> Danh sách Functions</h3>
+                    <span class="dialogvbaexcel-badge" id="dialogvbaexcel_listCount">0</span>
+                </div>
+                <div class="dialogvbaexcel-table-container">
+                    <table id="dialogvbaexcel_functionsList">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tiêu đề</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dialogvbaexcel_functionsListBody">
+                            <!-- Danh sách functions sẽ được tải ở đây -->
+                        </tbody>
+                    </table>
+                    <div id="dialogvbaexcel_listLoading" class="dialogvbaexcel-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Đang tải danh sách...
+                    </div>
+                    <div id="dialogvbaexcel_listNoData" class="dialogvbaexcel-no-data">
+                        Không có dữ liệu. Hãy thêm function mới!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột phải: Chi tiết function -->
+            <div class="dialogvbaexcel-right-column">
+                <div class="dialogvbaexcel-section-header">
+                    <h3><i class="fas fa-file-code"></i> Chi tiết Function</h3>
+                    <span id="dialogvbaexcel_selectedId" class="dialogvbaexcel-badge">Chưa chọn</span>
+                </div>
+                <div class="dialogvbaexcel-detail-container" id="dialogvbaexcel_detailContainer">
+                    <div class="dialogvbaexcel-no-selection" id="dialogvbaexcel_noSelection">
+                        <i class="fas fa-mouse-pointer fa-3x"></i>
+                        <p>Vui lòng chọn một function từ danh sách bên trái để xem chi tiết</p>
+                    </div>
+                    
+                    <div class="dialogvbaexcel-function-detail" id="dialogvbaexcel_functionDetail" style="display: none;">
+                        <div class="dialogvbaexcel-detail-header">
+                            <h4 id="dialogvbaexcel_detailTitle">Tiêu đề function</h4>
+                            <div class="dialogvbaexcel-detail-meta">
+                                <span class="dialogvbaexcel-meta-item">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span id="dialogvbaexcel_detailLikes">0</span> lượt thích
+                                </span>
+                                <span class="dialogvbaexcel-meta-item">
+                                    <i class="fas fa-download"></i>
+                                    <span id="dialogvbaexcel_detailDownloads">0</span> lượt tải
+                                </span>
+                                <span class="dialogvbaexcel-meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    Tạo: <span id="dialogvbaexcel_detailCreatedAt">-</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="dialogvbaexcel-detail-content">
+                            <div class="dialogvbaexcel-form-group">
+                                <label for="dialogvbaexcel_editTitle">Tiêu đề:</label>
+                                <input type="text" id="dialogvbaexcel_editTitle" class="dialogvbaexcel-form-control" maxlength="50">
+                            </div>
+                            
+                            <div class="dialogvbaexcel-form-group">
+                                <label for="dialogvbaexcel_editContent">Nội dung VBA Code:</label>
+                                <textarea id="dialogvbaexcel_editContent" class="dialogvbaexcel-form-control dialogvbaexcel-code-editor" rows="15"></textarea>
+                            </div>
+                            
+                            <div class="dialogvbaexcel-form-group">
+                                <label for="dialogvbaexcel_editComment">Ghi chú:</label>
+                                <textarea id="dialogvbaexcel_editComment" class="dialogvbaexcel-form-control" rows="4" placeholder="Nhập ghi chú..."></textarea>
+                            </div>
+                            
+                            <div class="dialogvbaexcel-detail-actions">
+                                <button id="dialogvbaexcel_saveBtn" class="dialogvbaexcel-btn dialogvbaexcel-btn-primary">
+                                    <i class="fas fa-save"></i> Lưu thay đổi
+                                </button>
+                                <button id="dialogvbaexcel_deleteBtn" class="dialogvbaexcel-btn dialogvbaexcel-btn-danger">
+                                    <i class="fas fa-trash"></i> Xóa function
+                                </button>
+                                <button id="dialogvbaexcel_incrementLikeBtn" class="dialogvbaexcel-btn dialogvbaexcel-btn-outline">
+                                    <i class="fas fa-thumbs-up"></i> Thích
+                                </button>
+                                <button id="dialogvbaexcel_incrementDownloadBtn" class="dialogvbaexcel-btn dialogvbaexcel-btn-outline">
+                                    <i class="fas fa-download"></i> Tải
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal thêm mới function -->
+        <div id="dialogvbaexcel_functionModal" class="dialogvbaexcel-modal">
+            <div class="dialogvbaexcel-modal-content">
+                <div class="dialogvbaexcel-modal-header">
+                    <h2 id="dialogvbaexcel_modalTitle">Thêm VBA Function mới</h2>
+                    <span class="dialogvbaexcel-close">&times;</span>
+                </div>
+                <div class="dialogvbaexcel-modal-body">
+                    <form id="dialogvbaexcel_functionForm">
+                        <div class="dialogvbaexcel-form-group">
+                            <label for="dialogvbaexcel_functionType">Loại Function</label>
+                            <select id="dialogvbaexcel_functionType" name="type">
+                                <option value="1">EXCEL (EXC-XXX)</option>
+                                <option value="2">ACCESS (ACC-XXX)</option>
+                                <option value="3">POWERPOINT (POW-XXX)</option>
+                                <option value="4" selected>OTHER (OTH-XXX)</option>
+                            </select>
+                            <small class="dialogvbaexcel-form-text">Chọn loại function để tự động tạo ID phù hợp</small>
+                        </div>
+                        
+                        <div class="dialogvbaexcel-form-group">
+                            <label for="dialogvbaexcel_newTitle">Tiêu đề *</label>
+                            <input type="text" id="dialogvbaexcel_newTitle" name="title" required 
+                                   placeholder="Nhập tiêu đề function" maxlength="50">
+                        </div>
+                        
+                        <div class="dialogvbaexcel-form-group">
+                            <label for="dialogvbaexcel_functionContent">Nội dung VBA Code *</label>
+                            <textarea id="dialogvbaexcel_functionContent" name="content" rows="8" required 
+                                      placeholder="Nhập mã VBA tại đây..."></textarea>
+                            <small class="dialogvbaexcel-form-text">Sử dụng cú pháp VBA đúng</small>
+                        </div>
+                        
+                        <div class="dialogvbaexcel-form-group">
+                            <label for="dialogvbaexcel_newComment">Ghi chú (tùy chọn)</label>
+                            <textarea id="dialogvbaexcel_newComment" name="comment" rows="3" 
+                                      placeholder="Nhập ghi chú..."></textarea>
+                        </div>
+                        
+                        <div class="dialogvbaexcel-form-actions">
+                            <button type="button" class="dialogvbaexcel-btn dialogvbaexcel-btn-secondary dialogvbaexcel-close-modal">Hủy</button>
+                            <button type="submit" class="dialogvbaexcel-btn dialogvbaexcel-btn-primary">Tạo Function</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xác nhận xóa -->
+        <div id="dialogvbaexcel_confirmModal" class="dialogvbaexcel-modal">
+            <div class="dialogvbaexcel-modal-content dialogvbaexcel-small">
+                <div class="dialogvbaexcel-modal-header">
+                    <h2>Xác nhận xóa</h2>
+                </div>
+                <div class="dialogvbaexcel-modal-body">
+                    <p>Bạn có chắc chắn muốn xóa function <strong id="dialogvbaexcel_deleteFunctionId"></strong>?</p>
+                    <p class="dialogvbaexcel-warning-text">Function sẽ được đánh dấu là đã xóa (soft delete) và có thể khôi phục sau.</p>
+                </div>
+                <div class="dialogvbaexcel-modal-footer">
+                    <button id="dialogvbaexcel_cancelDelete" class="dialogvbaexcel-btn dialogvbaexcel-btn-secondary">Hủy</button>
+                    <button id="dialogvbaexcel_confirmDelete" class="dialogvbaexcel-btn dialogvbaexcel-btn-danger">Xóa</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông báo toast -->
+        <div id="dialogvbaexcel_toast" class="dialogvbaexcel-toast"></div>
+    </div>
+
+    <!-- <script src="pageusefullvbaexcelfunction.js"></script> -->
+</body>
+</html>

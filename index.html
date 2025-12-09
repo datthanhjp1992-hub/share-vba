@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBA Code Share Forum</title>
+    <link rel="stylesheet" href="./css/navigation-buttons.css">
+    <link rel="stylesheet" href="./css/datatable.css">
+    <link rel="stylesheet" href="./css/main.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-code logo-icon"></i>
+                <h1>VBA Code Share Forum</h1>
+            </div>
+            <p class="subtitle">Diễn đàn chia sẻ mã VBA cho Excel, Access, Word và các ứng dụng Office khác</p>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- LEFT PANEL -->
+            <aside class="left-panel panel">
+                <h2><i class="fas fa-ad"></i> Quảng cáo</h2>
+                <div class="ad-content">
+                    <div class="ad-placeholder">
+                        <p>Khu vực dành cho quảng cáo</p>
+                        <i class="fas fa-bullhorn ad-icon"></i>
+                        <p>Kích thước: 300x600px</p>
+                        <p>Liên hệ: quangcao@vbaforum.vn</p>
+                    </div>
+
+                    <div class="ad-sample">
+                        <h3>Khóa học VBA nâng cao</h3>
+                        <p>Học VBA chuyên sâu với giảng viên có 10+ năm kinh nghiệm</p>
+                        <button class="ad-button">Tìm hiểu thêm</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER PANEL (đã sửa) -->
+            <section class="center-panel panel">
+                <h2><i class="fas fa-home"></i> Diễn đàn chính</h2>
+
+                <!-- Vùng tải nội dung động -->
+                <div id="content">
+                    <!-- Nội dung từ WellcomePage.html hoặc file khác sẽ được load vào đây -->
+                </div>
+
+            </section>
+
+            <!-- RIGHT PANEL -->
+            <aside class="right-panel panel">
+                <h2><i class="fas fa-sign-in-alt"></i> Đăng nhập</h2>
+                <div class="login-content">
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Tên đăng nhập</label>
+                            <input type="text" id="username" placeholder="Nhập tên đăng nhập">
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                            <input type="password" id="password" placeholder="Nhập mật khẩu">
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox">
+                                <input type="checkbox" id="remember">
+                                <span>Ghi nhớ đăng nhập</span>
+                            </label>
+                            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                        </div>
+
+                        <button class="login-button" id="loginButton">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                        </button>
+
+                        <div class="separator">
+                            <span>hoặc</span>
+                        </div>
+
+                        <button class="register-button" id="registerButton">
+                            <i class="fas fa-user-plus"></i> Đăng ký tài khoản mới
+                        </button>
+                    </div>
+
+                    <div class="login-info">
+                        <h3><i class="fas fa-info-circle"></i> Tại sao nên đăng ký?</h3>
+                        <ul>
+                            <li>Đăng bài viết và chia sẻ code</li>
+                            <li>Lưu trữ mã nguồn yêu thích</li>
+                            <li>Nhận thông báo khi có trả lời</li>
+                            <li>Tham gia thảo luận chuyên sâu</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <h2><i class="fas fa-address-card"></i> Thông tin liên hệ</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>support@vbaforum.vn</p>
+                            <p>admin@vbaforum.vn</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Điện thoại</h3>
+                            <p>+84 123 456 789</p>
+                            <p>+84 987 654 321</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Địa chỉ</h3>
+                            <p>Tòa nhà VBA Forum, 123 Nguyễn Văn Linh</p>
+                            <p>Quận 7, TP. Hồ Chí Minh</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="social-links">
+                    <h3>Kết nối với chúng tôi</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <p class="copyright">© 2023 VBA Code Share Forum. Tất cả các quyền được bảo lưu.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="./js/app-initializer.js"></script>
+    <script src="./js/core-router.js"></script>
+    <script src="./js/datatable.js"></script>
+    <script src="./js/navigation-components.js"></script>
+    <script src="./js/vba-functions-module.js"></script>
+    <!-- Script load trang động -->
+   <script>
+	// Kiểm tra xem đang chạy từ file:// hay http://
+	console.log('Protocol:', window.location.protocol);
+	console.log('Origin:', window.location.origin);
+
+	if (window.location.protocol === 'file:') {
+	    console.warn('⚠️ Running from file:// protocol');
+	    console.warn('⚠️ Some features may not work due to CORS restrictions');
+	    console.warn('⚠️ Please run from a local HTTP server');
+	    
+	    // Hiển thị cảnh báo cho người dùng
+	    document.addEventListener('DOMContentLoaded', function() {
+	        const warning = document.createElement('div');
+	        warning.style.cssText = `
+	            position: fixed;
+	            top: 10px;
+	            right: 10px;
+	            background: #ff9800;
+	            color: black;
+	            padding: 10px 15px;
+	            border-radius: 5px;
+	            z-index: 9999;
+	            font-weight: bold;
+	            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	        `;
+	        warning.innerHTML = '⚠️ Đang chạy từ file:// - Một số tính năng có thể không hoạt động';
+	        document.body.appendChild(warning);
+	    });
+	}
+	</script>
+
+</body>
+</html>

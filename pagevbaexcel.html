@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBA Excel Page</title>
+    <!-- Font Awesome - PHẢI load trước -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS của Home Button Component -->
+    <!-- CSS của page -->
+    <link rel="stylesheet" href="css/pagevbaexcel.css">
+</head>
+
+<body>
+
+    <div class="excel-container">
+        <div class="home-button green" data-title="Quay lại trang chủ" data-route="wellcome"></div>
+        <div class="back-button gray" data-title="Quay lại"></div>
+        <h1 class="excel-title">
+            <i class="fas fa-file-excel"></i> Chuyên mục VBA Excel
+        </h1>
+
+        <p class="excel-intro">
+            Nơi tổng hợp các hàm VBA hữu ích, hỏi đáp, chia sẻ kinh nghiệm lập trình Excel VBA.
+        </p>
+
+        <div class="excel-menu">
+            <div class="excel-menu-item" data-route="usefullexcelfunction" onclick="handleMenuClick('usefullexcelfunction')">
+                <i class="fas fa-list"></i>
+                <span>Danh sách các function có ích</span>
+            </div>
+            
+            <a href="" class="excel-menu-item">
+                <i class="fas fa-comments"></i>
+                <span>Q & A</span>
+            </a>
+
+        </div>
+        
+        
+
+    </div>
+
+    
+</body>
+</html>
