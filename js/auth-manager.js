@@ -53,7 +53,7 @@
 
         async loadLoginDialog() {
             try {
-                const response = await fetch('./dialogs/dialogLogin.html');
+                const response = await fetch('./dialogLogin.html');
                 if (!response.ok) throw new Error('Failed to load login dialog');
                 
                 const html = await response.text();
@@ -71,7 +71,7 @@
 
         async loadLoggedInDialog() {
             try {
-                const response = await fetch('./dialogs/dialogLogging.html');
+                const response = await fetch('./dialogLogging.html');
                 if (!response.ok) throw new Error('Failed to load logged in dialog');
                 
                 const html = await response.text();
