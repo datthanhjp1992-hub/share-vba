@@ -149,6 +149,13 @@
         localStorage.setItem('vba_user_data', JSON.stringify(userData));
         
         console.log('✅ User information saved:', userData);
+
+        // Dispatch custom event for auth manager
+        const event = new CustomEvent('userLoggedIn', {
+            detail: { userData: userData }
+        });
+        document.dispatchEvent(event);
+
     }
 
     function updateUIAfterLogin(userData) {

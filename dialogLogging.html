@@ -1,0 +1,71 @@
+<!-- File: dialogLogging.html -->
+<div class="user-logged-in-container">
+    <div class="welcome-section">
+        <div class="welcome-header">
+            <i class="fas fa-user-circle user-icon"></i>
+            <h3 class="welcome-title">Đăng nhập thành công!</h3>
+        </div>
+        
+        <div class="user-info">
+            <div class="info-item">
+                <i class="fas fa-user"></i>
+                <div class="info-content">
+                    <span class="info-label">Tên người dùng:</span>
+                    <span class="info-value" id="loggedUsername">Đang tải...</span>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-shield-alt"></i>
+                <div class="info-content">
+                    <span class="info-label">Quyền hạn:</span>
+                    <span class="info-value" id="loggedAuthorities">Đang tải...</span>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <div class="info-content">
+                    <span class="info-label">Ngày sinh:</span>
+                    <span class="info-value" id="loggedBirthday">Đang tải...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="user-actions">
+            <button class="btn btn-primary profile-btn" id="profileButton">
+                <i class="fas fa-id-card"></i> Xem hồ sơ
+            </button>
+            
+            <button class="btn btn-secondary settings-btn" id="settingsButton">
+                <i class="fas fa-cog"></i> Cài đặt
+            </button>
+            
+            <button class="btn btn-danger logout-btn" id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+        </div>
+        
+        <div class="quick-links">
+            <h4><i class="fas fa-rocket"></i> Truy cập nhanh</h4>
+            <div class="links-grid">
+                <a href="#" class="quick-link" id="myPostsLink">
+                    <i class="fas fa-file-code"></i>
+                    <span>Bài viết của tôi</span>
+                </a>
+                <a href="#" class="quick-link" id="savedCodeLink">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Code đã lưu</span>
+                </a>
+                <a href="#" class="quick-link" id="notificationsLink">
+                    <i class="fas fa-bell"></i>
+                    <span>Thông báo</span>
+                </a>
+                <a href="#" class="quick-link" id="messagesLink">
+                    <i class="fas fa-envelope"></i>
+                    <span>Tin nhắn</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
