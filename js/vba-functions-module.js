@@ -236,6 +236,50 @@
         }
     }
 
+    async function loadFunctionsListByPrefix(inputPrefix) {
+        console.log('📥 Loading functions list...');
+        showListLoading(true);
+
+        try {
+            
+            inputPrefix = inputPrefix ?? 0;
+
+            const url = `${CONFIG.API_ENDPOINT}?prefix=${inputPrefix}&show_deleted=true`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                state.allFunctions = data.data;
+                displayFunctionsList(state.allFunctions);
+                updateListCount(state.allFunctions.length);
+                showToast('Đã tải danh sách functions thành công!', 'success');
+            } else {
+                throw new Error(data.error || 'Unknown error');
+            }
+
+        } catch (error) {
+            console.error('❌ Error loading functions:', error);
+            showToast('Không thể kết nối đến server: ' + error.message, 'error');
+            showSampleData(); // Fallback
+        } finally {
+            showListLoading(false);
+        }
+    }
+
+
     function showSampleData() {
         console.log('📋 Showing sample data...');
         

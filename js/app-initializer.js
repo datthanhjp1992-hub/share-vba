@@ -18,7 +18,8 @@
         STORAGE_KEY_USERNAME: 'vba_forum_username',
         STORAGE_KEY_REMEMBER: 'vba_forum_remember',
         MESSAGE_DURATION: 3000,
-        SCROLL_ANIMATION_OFFSET: 100
+        SCROLL_ANIMATION_OFFSET: 100,
+        API_BASE_URL: window.location.origin // Base URL cho API requests
     };
 
     // ==================== INITIALIZATION ====================
@@ -61,9 +62,24 @@
                 showMessage('Chuyển hướng đến trang khôi phục mật khẩu...', 'info');
             }
         });
+
+        // Thêm sự kiện Enter để đăng nhập
+        if (usernameInput && passwordInput) {
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(usernameInput, passwordInput, rememberCheckbox);
+                }
+            });
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(usernameInput, passwordInput, rememberCheckbox);
+                }
+            });
+        }
     }
 
-    function handleLogin(usernameInput, passwordInput, rememberCheckbox) {
+    async function handleLogin(usernameInput, passwordInput, rememberCheckbox) {
         if (!usernameInput || !passwordInput) return;
 
         const username = usernameInput.value.trim();
@@ -75,18 +91,115 @@
             return;
         }
         
-        // Simulate successful login
-        showMessage(`Đăng nhập thành công với tên đăng nhập: ${username}`, 'success');
-        
-        // Save credentials if remember is checked
-        if (remember) {
-            localStorage.setItem(CONFIG.STORAGE_KEY_USERNAME, username);
-            localStorage.setItem(CONFIG.STORAGE_KEY_REMEMBER, 'true');
-            console.log('✅ Login credentials saved');
-        } else {
-            localStorage.removeItem(CONFIG.STORAGE_KEY_USERNAME);
-            localStorage.removeItem(CONFIG.STORAGE_KEY_REMEMBER);
+        // Hiển thị trạng thái loading
+        const loginButton = document.getElementById('loginButton');
+        if (loginButton) {
+            const originalText = loginButton.textContent;
+            loginButton.textContent = 'Đang đăng nhập...';
+            loginButton.disabled = true;
+            
+            try {
+                // Gọi loginProcess từ file login-process.js
+                const loginResult = await loginProcess(username, password);
+                
+                if (loginResult.success) {
+                    // Đăng nhập thành công
+                    showMessage(`Đăng nhập thành công! Chào mừng ${loginResult.username}`, 'success');
+                    
+                    // Lưu thông tin người dùng
+                    saveUserInformation(loginResult);
+                    
+                    // Save credentials if remember is checked
+                    if (remember) {
+                        localStorage.setItem(CONFIG.STORAGE_KEY_USERNAME, username);
+                        localStorage.setItem(CONFIG.STORAGE_KEY_REMEMBER, 'true');
+                        console.log('✅ Login credentials saved');
+                    } else {
+                        localStorage.removeItem(CONFIG.STORAGE_KEY_USERNAME);
+                        localStorage.removeItem(CONFIG.STORAGE_KEY_REMEMBER);
+                    }
+                    
+                    // Chuyển hướng hoặc cập nhật UI sau khi đăng nhập thành công
+                    updateUIAfterLogin(loginResult);
+                    
+                } else {
+                    // Đăng nhập thất bại
+                    showMessage(`Đăng nhập thất bại: ${loginResult.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('Lỗi kết nối đến server. Vui lòng thử lại sau.', 'error');
+            } finally {
+                // Khôi phục nút đăng nhập
+                loginButton.textContent = originalText;
+                loginButton.disabled = false;
+            }
         }
+    }
+
+    function saveUserInformation(userData) {
+        // Lưu thông tin người dùng vào global variables hoặc localStorage
+        window.userInformation = userData;
+        window.userLoginStatus = "logged_in";
+        window.userName = userData.username || userData.account;
+        window.userAuthorities = userData.authorities || 0;
+        window.userBirthday = userData.birthday || "";
+        
+        // Cũng có thể lưu vào localStorage nếu cần
+        localStorage.setItem('vba_user_data', JSON.stringify(userData));
+        
+        console.log('✅ User information saved:', userData);
+    }
+
+    function updateUIAfterLogin(userData) {
+        // Cập nhật UI sau khi đăng nhập thành công
+        const loginSection = document.querySelector('.login-section');
+        if (loginSection) {
+            loginSection.innerHTML = `
+                <div class="welcome-message">
+                    <h3>👋 Chào mừng ${userData.username || userData.account}!</h3>
+                    <p>Bạn đã đăng nhập thành công.</p>
+                    <button id="logoutButton" class="btn btn-danger">Đăng xuất</button>
+                </div>
+            `;
+            
+            // Thêm sự kiện đăng xuất
+            document.getElementById('logoutButton').addEventListener('click', handleLogout);
+        }
+        
+        // Thêm class để thay đổi style
+        document.body.classList.add('user-logged-in');
+    }
+
+    function handleLogout() {
+        // Xóa thông tin người dùng
+        window.userInformation = "";
+        window.userLoginStatus = "";
+        window.userName = "";
+        window.userAuthorities = "";
+        window.userBirthday = "";
+        
+        // Xóa localStorage
+        localStorage.removeItem('vba_user_data');
+        localStorage.removeItem(CONFIG.STORAGE_KEY_USERNAME);
+        localStorage.removeItem(CONFIG.STORAGE_KEY_REMEMBER);
+        
+        // Khôi phục UI đăng nhập
+        const loginSection = document.querySelector('.login-section');
+        if (loginSection) {
+            // Reload phần đăng nhập (giả sử có HTML sẵn với id="login-container")
+            const loginContainer = document.getElementById('login-container');
+            if (loginContainer) {
+                loginSection.innerHTML = loginContainer.innerHTML;
+                initLoginForm(); // Khởi tạo lại form đăng nhập
+            }
+        }
+        
+        // Xóa class
+        document.body.classList.remove('user-logged-in');
+        
+        showMessage('Đã đăng xuất thành công', 'info');
+        console.log('✅ User logged out');
     }
 
     function checkSavedLogin() {
@@ -99,6 +212,18 @@
             usernameInput.value = savedUsername;
             rememberCheckbox.checked = true;
             console.log('✅ Auto-filled saved login credentials');
+        }
+        
+        // Kiểm tra nếu đã đăng nhập từ trước
+        const savedUserData = localStorage.getItem('vba_user_data');
+        if (savedUserData) {
+            try {
+                const userData = JSON.parse(savedUserData);
+                saveUserInformation(userData);
+                updateUIAfterLogin(userData);
+            } catch (e) {
+                console.error('Error loading saved user data:', e);
+            }
         }
     }
 
@@ -222,6 +347,28 @@
                 margin-right: 10px;
                 font-size: 1.5rem;
             }
+
+            .welcome-message {
+                text-align: center;
+                padding: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .welcome-message h3 {
+                margin-bottom: 10px;
+            }
+
+            body.user-logged-in .login-section {
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
         `;
         document.head.appendChild(style);
     }
@@ -250,7 +397,9 @@
 
     window.VBAApp = {
         showMessage: showMessage,
-        handleLogin: handleLogin
+        handleLogin: handleLogin,
+        handleLogout: handleLogout,
+        saveUserInformation: saveUserInformation
     };
 
     console.log('✅ App Initializer loaded');
